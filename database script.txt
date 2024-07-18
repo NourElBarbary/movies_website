@@ -1,0 +1,247 @@
+CREATE TABLE imdb_User (
+   user_name VARCHAR2(50) NOT null  ,
+   mail VARCHAR2(100) NOT NULL UNIQUE ,
+   user_password VARCHAR2(50) NOT NULL,
+   PRIMARY KEY (user_name)
+ 
+);
+
+
+CREATE TABLE imdb_Admin (
+   admin_username VARCHAR(50) NOT NULL,
+   admin_password VARCHAR(50) NOT NULL,
+   PRIMARY KEY (admin_username)
+);
+
+
+
+CREATE TABLE Directors (
+   director_id number(5) NOT NULL  ,
+   director_name VARCHAR2(100) NOT NULL,
+   bd DATE,
+   PRIMARY KEY (director_id)
+);
+
+
+
+
+CREATE TABLE Film (
+   film_id number(5) NOT NULL  ,
+   title VARCHAR2(100) NOT NULL,
+   releasedate DATE,
+   film_category VARCHAR2(50),
+   film_language VARCHAR2(50),
+   film_duration number(5),
+   description VARCHAR2(500),
+   director_id number(5) ,
+   film_photo blob,
+   film_video blob,
+   PRIMARY KEY (film_id),
+   FOREIGN KEY (director_id) REFERENCES Directors(director_id) on delete cascade
+);
+
+
+
+
+
+CREATE TABLE Actor (
+   actor_id number(5) NOT NULL ,
+   actor_name VARCHAR2(100) NOT NULL,
+   bd DATE,
+   actor_gender VARCHAR2(100) NOT NULL,
+   PRIMARY KEY (actor_id)
+);
+
+
+
+
+CREATE TABLE imdb_filmactors(
+   actor_id number(5) not null ,
+   film_id number(5) not null ,
+   foreign key (actor_id) references Actor (actor_id) on delete cascade,
+   foreign key (film_id) references Film (film_id) on delete cascade
+);
+
+CREATE TABLE Rate (
+   film_id number(5) NOT NULL ,
+   user_name varchar2(50) NOT NULL,
+   rate number(5),
+   PRIMARY KEY (film_id,user_name),
+   FOREIGN KEY (film_id) REFERENCES Film(film_id)on delete cascade,
+   FOREIGN KEY (user_name) REFERENCES imdb_User(user_name)on delete cascade
+);
+
+
+CREATE TABLE Watchlist (
+   user_name varchar2(50) NOT NULL ,
+   film_id number(5) NOT NULL ,
+   FOREIGN KEY (user_name) REFERENCES imdb_User(user_name) on delete cascade,
+   FOREIGN KEY (film_id) REFERENCES Film(film_id) on delete cascade
+);
+
+
+
+-----------------------------------------------------------------------------------------
+
+
+INSERT INTO imdb_User (user_name, mail, user_password) VALUES
+('samy', 'samy@example.com', 'pass1234');
+
+INSERT INTO imdb_User (user_name, mail, user_password) VALUES
+('nour', 'nour@example.com', 'abc45678');
+
+INSERT INTO imdb_User (user_name, mail, user_password) VALUES
+('ammar', 'ammar@example.com', 'xyz78901');
+
+INSERT INTO imdb_User (user_name, mail, user_password) VALUES
+('bassem', 'bassem@example.com', '1234defg');
+
+
+-------------------------------------------------------------
+
+INSERT INTO imdb_Admin (admin_username, admin_password) VALUES
+('samy', '123abc');
+
+INSERT INTO imdb_Admin (admin_username, admin_password) VALUES
+('baraa', 'password123');
+
+INSERT INTO imdb_Admin (admin_username, admin_password) VALUES
+('krkr', '123abc');
+
+-----------------------------------------------------------------
+
+INSERT INTO Directors (director_id, director_name, bd) VALUES
+(1, 'Steven Spielberg', '18-Dec-1946');
+
+INSERT INTO Directors (director_id, director_name, bd) VALUES
+(2, 'Martin Scorsese', '17-Nov-1942');
+
+INSERT INTO Directors (director_id, director_name, bd) VALUES
+(3, 'Quentin Tarantino','27-Mar-1963');
+
+INSERT INTO Directors (director_id, director_name, bd) VALUES
+(4, 'James Gunn', '5-Aug-1966');
+
+INSERT INTO Directors (director_id, director_name, bd) VALUES
+(5, 'Craig Gillespie', '1-Sep-1967');
+
+INSERT INTO Directors (director_id, director_name, bd) VALUES
+(6, 'Shawn Levy', '23-Jul-1968');
+
+INSERT INTO Directors (director_id, director_name, bd) VALUES
+(7, 'Todd Phillips', '20-Dec-1970');
+
+INSERT INTO Directors (director_id, director_name, bd) VALUES
+(8, 'James Cameron', '16-Aug-1954');
+
+INSERT INTO Directors (director_id, director_name, bd) VALUES
+(9, 'Jake Kasdan', '28-Oct-1974');
+
+INSERT INTO Directors (director_id, director_name, bd) VALUES
+(10, 'Christopher Nolan', '30-Jul-1970');
+
+
+---------------------------------------------------------------------------
+
+INSERT INTO Actor (actor_id, actor_name, bd, actor_gender) VALUES (1, 'James Gunn', TO_DATE('05-Aug-1966', 'DD-MON-YYYY'), 'Male');
+
+INSERT INTO Actor (actor_id, actor_name, bd, actor_gender) VALUES (2, 'Zoe Saldana', TO_DATE('19-Jun-1978', 'DD-MON-YYYY'), 'Female');
+
+INSERT INTO Actor (actor_id, actor_name, bd, actor_gender) VALUES (3, 'Dave Bautista', TO_DATE('18-Jan-1969', 'DD-MON-YYYY'), 'Male');
+
+INSERT INTO Actor (actor_id, actor_name, bd, actor_gender) VALUES (4, 'Vin Diesel', TO_DATE('18-Jul-1967', 'DD-MON-YYYY'), 'Male');
+
+INSERT INTO Actor (actor_id, actor_name, bd, actor_gender) VALUES (5, 'Bradley Cooper', TO_DATE('05-Jan-1975', 'DD-MON-YYYY'), 'Male');
+
+INSERT INTO Actor (actor_id, actor_name, bd, actor_gender) VALUES (6, 'Craig Gillespie', TO_DATE('01-Sep-1967', 'DD-MON-YYYY'), 'Male');
+
+INSERT INTO Actor (actor_id, actor_name, bd, actor_gender) VALUES (7, 'Emma Stone', TO_DATE('06-Nov-1988', 'DD-MON-YYYY'), 'Female');
+
+INSERT INTO Actor (actor_id, actor_name, bd, actor_gender) VALUES (8, 'Emma Thompson', TO_DATE('15-Apr-1959', 'DD-MON-YYYY'), 'Female');
+
+INSERT INTO Actor (actor_id, actor_name, bd, actor_gender) VALUES (9, 'Joel Fry', TO_DATE('20-May-1985', 'DD-MON-YYYY'), 'Male');
+
+INSERT INTO Actor (actor_id, actor_name, bd, actor_gender) VALUES (10, 'Paul Walter Hauser', TO_DATE('15-Oct-1986', 'DD-MON-YYYY'), 'Male');
+
+INSERT INTO Actor (actor_id, actor_name, bd, actor_gender) VALUES (11, 'Ryan Reynolds', TO_DATE('23-Oct-1976', 'DD-MON-YYYY'), 'Male');
+
+INSERT INTO Actor (actor_id, actor_name, bd, actor_gender) VALUES (12, 'Jodie Comer', TO_DATE('11-Mar-1993', 'DD-MON-YYYY'), 'Female');
+
+INSERT INTO Actor (actor_id, actor_name, bd, actor_gender) VALUES (13, 'Joe Keery', TO_DATE('24-Apr-1992', 'DD-MON-YYYY'), 'Male');
+
+INSERT INTO Actor (actor_id, actor_name, bd, actor_gender) VALUES (14, 'Dwayne Johnson', TO_DATE('02-May-1972', 'DD-MON-YYYY'), 'Male');
+
+INSERT INTO Actor (actor_id, actor_name, bd, actor_gender) VALUES (15, 'Todd Phillips', TO_DATE('20-Dec-1970', 'DD-MON-YYYY'), 'Male');
+
+INSERT INTO Actor (actor_id, actor_name, bd, actor_gender) VALUES (16, 'Joaquin Phoenix', TO_DATE('28-Oct-1974', 'DD-MON-YYYY'), 'Male');
+
+INSERT INTO Actor (actor_id, actor_name, bd, actor_gender) VALUES (17, 'Robert De Niro', TO_DATE('17-Aug-1943', 'DD-MON-YYYY'), 'Male');
+
+INSERT INTO Actor (actor_id, actor_name, bd, actor_gender) 
+VALUES (18, 'Zazie Beetz', TO_DATE('01-Jun-1991', 'DD-MON-YYYY'), 'Female');
+
+INSERT INTO Actor (actor_id, actor_name, bd, actor_gender) 
+VALUES (19, 'Dante Pereira-Olson', TO_DATE('13-Aug-2008', 'DD-MON-YYYY'), 'Female');
+
+INSERT INTO Actor (actor_id, actor_name, bd, actor_gender) 
+VALUES (20, 'Glenn Fleshler', TO_DATE('05-Sep-1968', 'DD-MON-YYYY'), 'Male');
+
+INSERT INTO Actor (actor_id, actor_name, bd, actor_gender) 
+VALUES (21, 'James Cameron', TO_DATE('16-Aug-1954', 'DD-MON-YYYY'), 'Male');
+
+INSERT INTO Actor (actor_id, actor_name, bd, actor_gender) 
+VALUES (22, 'Sam Worthington', TO_DATE('02-Aug-1976', 'DD-MON-YYYY'), 'Male');
+
+INSERT INTO Actor (actor_id, actor_name, bd, actor_gender) 
+VALUES (23, 'Sigourney Weaver', TO_DATE('08-Oct-1949', 'DD-MON-YYYY'), 'Female');
+
+INSERT INTO Actor (actor_id, actor_name, bd, actor_gender) 
+VALUES (24, 'Jake Kasdan', TO_DATE('28-Oct-1974', 'DD-MON-YYYY'), 'Male');
+
+INSERT INTO Actor (actor_id, actor_name, bd, actor_gender) 
+VALUES (25, 'Kevin Hart', TO_DATE('06-Jul-1979', 'DD-MON-YYYY'), 'Male');
+
+INSERT INTO Actor (actor_id, actor_name, bd, actor_gender) 
+VALUES (26, 'Jack Black', TO_DATE('28-Aug-1969', 'DD-MON-YYYY'), 'Male');
+
+
+
+
+
+-----------------------------------------------------------------------------
+create or replace PROCEDURE get_actors
+(us out sys_refcursor)
+as 
+begin 
+open us for
+select actor_name from actor;
+end;
+-------------------------------------------------------------------------------
+create or replace PROCEDURE get_movies
+(us out sys_refcursor)
+as
+begin
+open us for
+select title from film;
+end get_movies;
+------------------------------------------------------------------------------
+create or replace
+PROCEDURE avg_rate(filmid in number,avgrate out number)
+is
+
+begin
+SELECT avg(rate)
+into avgrate
+from rate
+where film_id=filmid;
+end;
+------------------------------------------------------------------------------
+create or replace PROCEDURE get_actor_name
+(filmid number,cid out sys_refcursor)
+as
+begin
+open cid for
+select actor.actor_name
+from imdb_filmactors , actor 
+where imdb_filmactors.actor_id=actor.actor_id and filmid=imdb_filmactors.film_id;
+end;
